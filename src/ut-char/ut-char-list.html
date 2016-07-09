@@ -1,0 +1,107 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="./ut-char-data.html">
+<link rel="import" href="./ut-char-list-item.html">
+
+<dom-module id="ut-char-list">
+    <style is="custom-style" include="iron-flex iron-flex-alignment">
+        ut-char-list-item {
+            width: 250px;
+            padding: 15px;
+        }
+
+        paper-fab {
+            position: absolute;
+            right: 30px;
+            bottom: 30px;
+        }
+
+    </style>
+    <template>
+
+        <ut-char-data id="charData" char-data="{{charData}}"></ut-char-data>
+
+        <div class="horizontal layout wrap center-justified">
+            <template is="dom-repeat" items="{{charsArray}}">
+                <ut-char-list-item char="{{item}}"></ut-char-list-item>
+            </template>
+        </div>
+
+
+        <paper-dialog id="addCharDialog">
+            Add new Character:
+            <paper-input label="Nickname" value="{{newCharacter.nickname}}"></paper-input>
+            <div class="buttons">
+                <paper-icon-button icon="add" on-tap="_onAddCharTapped"
+                                   disabled$="{{!newCharacter.nickname}}"></paper-icon-button>
+            </div>
+        </paper-dialog>
+
+        <paper-fab disabled$="{{!_canAddNewCharacter}}" icon="add" on-click="_onFabTapped"></paper-fab>
+
+        <paper-toast id="addCharSucceededToast" text="You have added a new character."></paper-toast>
+        <paper-toast id="addCharFailedToast" text="We could not add a new character."></paper-toast>
+
+    </template>
+    <script>
+        Polymer({
+            is: 'ut-char-list',
+            properties: {
+                charService: {
+                    type: Object
+                },
+                charData: {
+                    type: Object,
+                    notify: true,
+                    observer: '_charDataChanged'
+                },
+                charsArray: {
+                    type: Array,
+                    value: function () {
+                        return []
+                    }
+                },
+                newCharacter: {
+                    type: Object,
+                    value: function () {
+                        return {}
+                    }
+                },
+                _canAddNewCharacter: Boolean
+            },
+
+            _charDataChanged: function (charData) {
+                if (charData && charData.characters) {
+                    const charsArray = Object.keys(charData.characters).map(function (key) {
+                        return charData.characters[key]
+                    });
+                    this.set('charsArray', charsArray);
+                    this.set('_canAddNewCharacter', charsArray.length < charData.maxChars);
+                }
+            },
+
+            _onFabTapped: function () {
+                this.$.addCharDialog.open();
+            },
+
+            _onAddCharTapped: function () {
+                if (this.newCharacter && this.newCharacter.nickname) {
+                    if (this.$.charData.charService.addChar(this.newCharacter)) {
+                        this.$.addCharDialog.close();
+                        this.newCharacter = {};
+                        this.$.addCharSucceededToast.open();
+                    } else {
+                        this.$.addCharFailedToast.open();
+                    }
+                }
+            }
+        });
+
+
+    </script>
+</dom-module>

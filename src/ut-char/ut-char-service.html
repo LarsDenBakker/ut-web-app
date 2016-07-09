@@ -1,0 +1,89 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../rxjs/rxjs.html">
+
+<dom-module id="ut-char-service">
+    <template>
+
+        <iron-ajax
+                id="getQuery"
+                auto
+                url="/mocks/characters.json"
+                handle-as="json"
+                on-response="_onGetResponse"
+                debounce-duration="300">
+        </iron-ajax>
+
+    </template>
+    <script>
+
+        Polymer({
+            is: 'ut-char-service',
+
+            _subject: new Rx.Subject(),
+
+            _charData: undefined,
+
+            subscribe: function (callback) {
+                if (this._charData) callback(this._charData);
+                return this._subject.subscribe(callback);
+            },
+
+            refresh: function () {
+                this.$.getQuery.generateRequest();
+            },
+
+            _onGetResponse: function (event) {
+//                console.log('onGetResponse, ', event.detail.response)
+                this._charData = event.detail.response;
+                this._onNext();
+            },
+
+            _onNext: function() {
+//                console.log('service.onNext()', this._charData)
+                this._subject.onNext(this._charData);
+            },
+
+            addChar: function (character) {
+                this._validateLoaded();
+                var index = this._findNextIndex();
+                if (index >= 0) {
+                    character.index = index;
+                    this._charData.characters[index] = character;
+                    this._onNext();
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+
+            editChar: function (toEdit) {
+                this._validateLoaded();
+                if (toEdit && toEdit.index) {
+                    if (this._charData.characters[toEdit.index]) {
+                        this._charData.characters[toEdit.index] = toEdit;
+                        this._onNext();
+                    } else {
+                        throw `Attempting to edit a char at non-existing index: ${toEdit.index}.`
+                    }
+                } else {
+                    throw `Illegal char to edit: ${toEdit}.`
+                }
+                //TODO: Post to server
+            },
+
+            _findNextIndex: function () {
+                for (var i = 0; i < this._charData.maxChars; i++) {
+                    if (!this._charData.characters[i]) return i
+                }
+                return -1
+            },
+
+            _validateLoaded: function() {
+                if (!this._charData) throw 'Service has not been loaded yet.';
+            }
+        });
+
+        document.documentElement.appendChild(document.createElement('ut-char-service'))
+    </script>
+</dom-module>

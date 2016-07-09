@@ -1,0 +1,52 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+
+<dom-module id="ut-char-list-item">
+    <style>
+        paper-card {
+            width: 100%;
+            text-align: center;
+        }
+
+        paper-card paper-button {
+            float: right;
+            margin: 5px;
+        }
+    </style>
+
+    <template>
+
+
+            <paper-card id="card" heading="{{char.nickname}}" image="{{char.image}}">
+                <div class="card-actions">
+                    <a href="/characters/edit/{{char.index}}" tabindex="-1">
+                        <paper-button>Edit</paper-button>
+                    </a>
+                    <a href="/characters/view/{{char.index}}">
+                        <paper-button>View</paper-button>
+                    </a>
+                </div>
+            </paper-card>
+
+    </template>
+    <script>
+        Polymer({
+            is: 'ut-char-list-item',
+            properties: {
+                char: {
+                    type: Object,
+                    notify: true
+                },
+                allowEdit: {
+                    type: Boolean,
+                    value: false
+                }
+            }
+        })
+
+    </script>
+</dom-module>

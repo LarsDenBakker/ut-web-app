@@ -1,0 +1,30 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="./ut-char-service.html">
+
+<dom-module id="ut-char-data">
+    <script>
+        (function () {
+            var charService = document.querySelector('ut-char-service');
+            Polymer({
+                is: 'ut-char-data',
+                properties: {
+                    charData: {
+                        type: Object,
+                        notify: true
+                    },
+                    charService: {
+                        type: Object,
+                        value: charService
+                    }
+                },
+                ready: function () {
+                    var _this = this;
+                    charService.subscribe(function(charData) {
+//                        console.log('on next, ', JSON.stringify(charData.characters[1]))
+                        _this.set('charData', Object.assign({}, charData));
+                    });
+                }
+            })
+        })();
+    </script>
+</dom-module>

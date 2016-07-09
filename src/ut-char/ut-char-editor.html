@@ -1,0 +1,137 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-input/paper-textarea.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+
+<dom-module id="ut-char-editor">
+    <style is="custom-style" include="iron-flex iron-flex-alignment">
+        paper-card {
+            max-width: 600px;
+            padding: 5px;
+            box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+        }
+
+        #content {
+            padding: 10px;
+        }
+
+        #charBio {
+            padding: 10px;
+        }
+
+        #charProfile {
+            padding: 15px;
+        }
+    </style>
+    <template>
+
+
+        <ut-char-data id="charData" char-data="{{charData}}"></ut-char-data>
+
+        <div id="content" class="horizontal layout center-justified" hidden$="{{!_validCharSelected}}">
+            <a href="/characters">
+                <paper-icon-button icon="arrow-back"></paper-icon-button>
+            </a>
+            <paper-card heading="{{char.nickname}}">
+
+                <div class="card-content horizontal layout wrap">
+
+                    <div id="charImage">
+                        <iron-image src="{{char.image}}" fade="true"></iron-image>
+                        <paper-input label="Image URL" value="{{editedChar.image}}"></paper-input>
+                    </div>
+
+                    <div id="charBio">
+                        <paper-input label="Nickname" value="{{editedChar.nickname}}"></paper-input>
+                        <paper-input label="First name" value="{{editedChar.firstName}}"></paper-input>
+                        <paper-input label="Last name" value="{{editedChar.lastName}}"></paper-input>
+                        <paper-input label="Gender" value="{{editedChar.gender}}"></paper-input>
+                        <paper-input label="Race" value="{{editedChar.race}}"></paper-input>
+                        <paper-input label="Faith" value="{{editedChar.faith}}"></paper-input>
+                        <paper-input label="Age" value="{{editedChar.age}}"></paper-input>
+                        <paper-input label="Residence" value="{{editedChar.residence}}"></paper-input>
+                    </div>
+
+                </div>
+
+                <div id="charProfile">
+                    <!-- TODO: Set proper length, max-length does not seem to work. -->
+                    <paper-textarea label="Profile" max-length="40" rows="3"
+                                    value="{{editedChar.profile}}"></paper-textarea>
+                </div>
+
+                <div class="card-actions">
+                    <a href="/characters" tabindex="-1" on-tap="_onSaveTapped">
+                        <paper-icon-button icon="save"></paper-icon-button>
+                    </a>
+                </div>
+
+            </paper-card>
+
+        </div>
+
+    </template>
+    <script>
+        Polymer({
+            is: 'ut-char-editor',
+            properties: {
+
+                charData: {
+                    type: Object,
+                    notify: true
+                },
+
+                charId: {
+                    type: String,
+                    notify: true
+                },
+
+                char: {
+                    type: Object,
+                    notify: true,
+                    computed: '_computeChar(charData, charId)'
+                },
+
+                editedChar: {
+                    type: Object,
+                    computed: '_computeEditedChar(char)'
+                },
+
+                _validCharSelected: {
+                    type: Boolean,
+                    notify: true,
+                    value: false
+                }
+            },
+
+            _computeChar: function (charData, charId) {
+                if (charData) {
+                    if (charData.characters[charId]) {
+                        this._validCharSelected = true;
+                        return this.charData.characters[charId];
+                    } else {
+                        this._validCharSelected = false;
+                        return undefined;
+                    }
+                } else {
+                    this._validCharSelected = false;
+                }
+            },
+
+            _computeEditedChar: function (char) {
+                return (char) ? Object.assign({}, this.char) : undefined;
+            },
+
+            _onSaveTapped: function () {
+                this.$.charData.charService.editChar(this.editedChar);
+            }
+
+        });
+    </script>
+</dom-module>
