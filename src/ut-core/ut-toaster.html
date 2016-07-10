@@ -1,0 +1,22 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
+
+<dom-module id="ut-toaster">
+    <template>
+        <paper-toast id="myToast"></paper-toast>
+    </template>
+    <script>
+        Polymer({
+            is:'ut-toaster',
+
+            toast: function(message) {
+                this.$.myToast.text = (message) ? message : '';
+                this.$.myToast.open();
+            }
+        })
+
+        document.documentElement.appendChild(document.createElement('ut-toaster'));
+    </script>
+
+
+</dom-module>

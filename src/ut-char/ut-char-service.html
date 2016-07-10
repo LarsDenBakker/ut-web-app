@@ -49,6 +49,7 @@
                 var index = this._findNextIndex();
                 if (index >= 0) {
                     character.index = index;
+                    character.username = 'demo';
                     this._charData.characters[index] = character;
                     this._onNext();
                     return true;
@@ -73,8 +74,8 @@
             },
 
             _findNextIndex: function () {
-                for (var i = 0; i < this._charData.maxChars; i++) {
-                    if (!this._charData.characters[i]) return i
+                for (var i = 1; i <= this._charData.maxChars; i++) {
+                    if (!this._charData.characters[i]) return i;
                 }
                 return -1
             },

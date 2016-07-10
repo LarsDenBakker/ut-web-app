@@ -2,28 +2,40 @@
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
 <link rel="import" href="./ut-char-data.html">
 <link rel="import" href="./ut-char-list-item.html">
+<link rel="import" href="../../bower_components/neon-animation/neon-animation-runner-behavior.html">
+<link rel="import" href="../../bower_components/neon-animation/animations/slide-down-animation.html">
+<link rel="import" href="../../bower_components/neon-animation/animations/fade-in-animation.html">
+<link rel="import" href="../../bower_components/neon-animation/animations/fade-out-animation.html">
 
 <dom-module id="ut-char-list">
     <style is="custom-style" include="iron-flex iron-flex-alignment">
         ut-char-list-item {
             width: 250px;
-            padding: 15px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            margin-left: 15px;
+            margin-right: 15px;
         }
 
         paper-fab {
-            position: absolute;
-            right: 30px;
+            position: fixed;
+            right: 25px;
             bottom: 30px;
+            background-color: #3f51b5;
+        }
+
+        #addCharSucceededToast {
+            text-align: center;
         }
 
     </style>
     <template>
-
         <ut-char-data id="charData" char-data="{{charData}}"></ut-char-data>
 
         <div class="horizontal layout wrap center-justified">
@@ -32,26 +44,43 @@
             </template>
         </div>
 
-
         <paper-dialog id="addCharDialog">
-            Add new Character:
-            <paper-input label="Nickname" value="{{newCharacter.nickname}}"></paper-input>
+            <h2>Add Character</h2>
+            <paper-input autofocus id="nicknameInput" label="Nickname" value="{{newCharacter.nickname}}"></paper-input>
             <div class="buttons">
-                <paper-icon-button icon="add" on-tap="_onAddCharTapped"
-                                   disabled$="{{!newCharacter.nickname}}"></paper-icon-button>
+                <paper-button icon="add" on-tap="_onAddCharTapped" disabled$="{{!newCharacter.nickname}}">Add
+                </paper-button>
             </div>
         </paper-dialog>
 
         <paper-fab disabled$="{{!_canAddNewCharacter}}" icon="add" on-click="_onFabTapped"></paper-fab>
 
-        <paper-toast id="addCharSucceededToast" text="You have added a new character."></paper-toast>
-        <paper-toast id="addCharFailedToast" text="We could not add a new character."></paper-toast>
-
     </template>
     <script>
         Polymer({
             is: 'ut-char-list',
+
+            behaviors: [Polymer.NeonAnimationRunnerBehavior],
+
+            listeners: {
+                'neon-animation-finish': '_onNeonAnimationFinish'
+            },
+
             properties: {
+                animationConfig: {
+                    value: function () {
+                        return {
+                            'entry': {
+                                name: 'fade-in-animation',
+                                node: this.$.addCharDialog
+                            },
+                            'exit': {
+                                name: 'fade-out-animation',
+                                node: this.$.addCharDialog
+                            }
+                        }
+                    }
+                },
                 charService: {
                     type: Object
                 },
@@ -85,20 +114,29 @@
                 }
             },
 
+            _onNeonAnimationFinish: function () {
+                if (!this.$.addCharDialog.opened) {
+                    this.$.addCharDialog.display = 'none';
+                }
+            },
+
             _onFabTapped: function () {
                 this.$.addCharDialog.open();
+//                this.$.addCharDialog.style.display = 'inline-block';
+                this.playAnimation('entry');
             },
 
             _onAddCharTapped: function () {
                 if (this.newCharacter && this.newCharacter.nickname) {
                     if (this.$.charData.charService.addChar(this.newCharacter)) {
-                        this.$.addCharDialog.close();
                         this.newCharacter = {};
-                        this.$.addCharSucceededToast.open();
+                        document.querySelector('ut-toaster').toast('You have added a new character.');
                     } else {
-                        this.$.addCharFailedToast.open();
+                        document.querySelector('ut-toaster').toast('A new character could not be added.');
                     }
                 }
+                this.playAnimation('exit');
+                this.$.addCharDialog.close();
             }
         });
 

@@ -1,10 +1,15 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/app-route/app-route.html">
+<link rel="import" href="../../bower_components/neon-animation/neon-animated-pages.html">
+
 <link rel="import" href="ut-char-list.html">
 <link rel="import" href="ut-char-card.html">
 <link rel="import" href="ut-char-editor.html">
 
 <dom-module id="ut-char-page">
+    <style>
+
+    </style>
     <template>
 
         <app-route
@@ -20,12 +25,14 @@
                 data="{{viewRouteData}}"
                 active="{{viewSelected}}">
         </app-route>
-
-        <iron-pages selected="{{selected}}" attr-for-selected="name" fallback-selection="list">
-            <ut-char-list name="list"></ut-char-list>
-            <ut-char-card name="view" char-id="{{viewRouteData.index}}"></ut-char-card>
-            <ut-char-editor name="edit" char-id="{{editRouteData.index}}"></ut-char-editor>
-        </iron-pages>
+            <neon-animated-pages selected="{{selected}}"
+                                 attr-for-selected="name"
+                                 entry-animation="fade-in-animation"
+                                 exit-animation="fade-out-animation">
+                <ut-char-list name="list"></ut-char-list>
+                <ut-char-card name="view" char-id="{{viewRouteData.index}}"></ut-char-card>
+                <ut-char-editor name="edit" char-id="{{editRouteData.index}}"></ut-char-editor>
+            </neon-animated-pages>
 
     </template>
     <script>
@@ -34,11 +41,11 @@
             properties: {
                 selected: {
                     type: String,
-                    computed: '_computeSelected(editSelected, viewSelected)'
-                }
+                    computed: '_computeSelected(editSelected, viewSelected)',
+                },
             },
             _computeSelected: function (editSelected, viewSelected) {
-                return (editSelected) ? 'edit' : (viewSelected) ? 'view' : undefined;
+                return (editSelected) ? 'edit' : (viewSelected) ? 'view' : 'list';
             }
         })
     </script>

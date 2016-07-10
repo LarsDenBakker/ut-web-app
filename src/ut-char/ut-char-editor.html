@@ -12,42 +12,83 @@
 <dom-module id="ut-char-editor">
     <style is="custom-style" include="iron-flex iron-flex-alignment">
         paper-card {
-            max-width: 600px;
-            padding: 5px;
+            width: 600px;
             box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
         }
 
-        #content {
-            padding: 10px;
+        #pageContent {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            margin-right: 40px;
         }
 
-        #charBio {
-            padding: 10px;
+        #charImg {
+            margin-bottom: 10px;
+            margin-right: 20px;
+            width: 250px;
+            height: 300px;
         }
 
-        #charProfile {
-            padding: 15px;
+        #charProfile paper-input {
+            margin-right: 10px;
+            width: 48%;
         }
+
+        #saveButton {
+            float: right;
+        }
+
+        #charImage paper-input {
+            width: 80%;
+        }
+
+        a {
+            color: black;
+            text-decoration: none;
+        }
+
     </style>
     <template>
 
-
         <ut-char-data id="charData" char-data="{{charData}}"></ut-char-data>
 
-        <div id="content" class="horizontal layout center-justified" hidden$="{{!_validCharSelected}}">
-            <a href="/characters">
+        <div id="pageContent" class="horizontal layout center-justified" hidden$="{{!_validCharSelected}}">
+
+            <a href="/char">
                 <paper-icon-button icon="arrow-back"></paper-icon-button>
             </a>
-            <paper-card heading="{{char.nickname}}">
+
+            <paper-card heading="Editing {{char.nickname}}">
 
                 <div class="card-content horizontal layout wrap">
 
-                    <div id="charImage">
-                        <iron-image src="{{char.image}}" fade="true"></iron-image>
-                        <paper-input label="Image URL" value="{{editedChar.image}}"></paper-input>
+                    <iron-image id="charImg"
+                                fade
+                                sizing="cover"
+                                src="{{char.image}}"
+                                preload
+                                placeholder="/img/default_profile_picture.png">
+                    </iron-image>
+
+                    <div id="charInfo">
+                        <div><strong>User:</strong> {{char.username}}</div>
+                        <div><strong>Character:</strong> {{char.index}}</div>
                     </div>
 
-                    <div id="charBio">
+                </div>
+
+                <div id="charImage" class="card-content">
+                    <h2>Image</h2>
+                    <div class="card-content horizontal layout wrap">
+                        <paper-input label="URL" value="{{editedChar.image}}"></paper-input>
+                        <paper-button  on-tap="_reloadImage">Reload</paper-button>
+                    </div>
+                </div>
+
+
+                <div id="charProfile" class="card-actions">
+                    <h2>Profile</h2>
+                    <div class="horizontal layout wrap">
                         <paper-input label="Nickname" value="{{editedChar.nickname}}"></paper-input>
                         <paper-input label="First name" value="{{editedChar.firstName}}"></paper-input>
                         <paper-input label="Last name" value="{{editedChar.lastName}}"></paper-input>
@@ -57,18 +98,19 @@
                         <paper-input label="Age" value="{{editedChar.age}}"></paper-input>
                         <paper-input label="Residence" value="{{editedChar.residence}}"></paper-input>
                     </div>
-
-                </div>
-
-                <div id="charProfile">
-                    <!-- TODO: Set proper length, max-length does not seem to work. -->
-                    <paper-textarea label="Profile" max-length="40" rows="3"
-                                    value="{{editedChar.profile}}"></paper-textarea>
                 </div>
 
                 <div class="card-actions">
-                    <a href="/characters" tabindex="-1" on-tap="_onSaveTapped">
-                        <paper-icon-button icon="save"></paper-icon-button>
+                    <h2>Biography</h2>
+                    <paper-textarea max-length="40"
+                                    rows="2"
+                                    value="{{editedChar.profile}}">
+                    </paper-textarea>
+                </div>
+
+                <div class="card-actions">
+                    <a href="/char" tabindex="-1" on-tap="_onSaveTapped">
+                        <paper-button  id="saveButton">Save</paper-button>
                     </a>
                 </div>
 
@@ -130,6 +172,11 @@
 
             _onSaveTapped: function () {
                 this.$.charData.charService.editChar(this.editedChar);
+                document.querySelector('ut-toaster').toast('Character ' + this.editedChar.nickname + ' has been saved.');
+            },
+
+            _reloadImage: function () {
+                this.$.charImg.src = this.editedChar.image;
             }
 
         });

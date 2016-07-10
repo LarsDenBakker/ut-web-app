@@ -16,16 +16,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
 <link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
 <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
-<link rel="import" href="../bower_components/paper-header-panel/paper-header-panel.html">
-<link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
-<link rel="import" href="../bower_components/paper-drawer-panel/paper-drawer-panel.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
-<link rel="import" href="./my-view1.html">
-<link rel="import" href="./my-view2.html">
-<link rel="import" href="./my-view3.html">
-<link rel="import" href="./ut-char/ut-char-page.html">
+<link rel="import" href="../bower_components/paper-menu/paper-menu.html">
+<link rel="import" href="../bower_components/paper-menu/paper-submenu.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+
+<link rel="import" href="../bower_components/neon-animation/neon-animated-pages.html">
+<link rel="import" href="../bower_components/neon-animation/animations/fade-in-animation.html">
+<link rel="import" href="../bower_components/neon-animation/animations/fade-out-animation.html">
+<link rel="import" href="ut-char/ut-char-page.html">
+<link rel="import" href="ut-home/ut-home-page.html">
+<link rel="import" href="ut-forums/ut-forums-page.html">
+<link rel="import" href="ut-core/ut-toaster.html">
 
 <dom-module id="ut-app">
 
@@ -39,12 +43,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 --app-secondary-color: black;
             }
 
-            app-header {
+            app-toolbar {
                 background-color: var(--app-primary-color);
                 color: #fff;
             }
 
-            app-drawer app-toolbar {
+            app-toolbar {
                 background-color: var(--app-primary-color);
                 color: #fff;
             }
@@ -74,6 +78,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 padding-left: 32px;
             }
 
+
         </style>
 
         <app-location route="{{route}}"></app-location>
@@ -81,42 +86,49 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 route="{{route}}"
                 pattern="/:page"
                 data="{{routeData}}"
-                tail="{{subroute}}"></app-route>
+                tail="{{subroute}}">
+        </app-route>
 
-        <app-drawer-layout fullbleed>
+        <app-drawer-layout id="drawerLayout" fullbleed>
 
-            <!-- Drawer content -->
+
             <app-drawer>
-                <app-toolbar>Menu</app-toolbar>
-                <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-                    <a name="view1" href="/characters">My Characters</a>
-                    <a name="view1" href="/view1">View One</a>
-                    <a name="view2" href="/view2">View Two</a>
-                    <a name="view3" href="/view3">View Three</a>
-                </iron-selector>
+                <app-toolbar>Uthrandir Web App BETA</app-toolbar>
+
+                <paper-menu attr-for-selected="page" selected="{{selectedPage}}">
+                    <paper-item page="home" on-tap="_onMenuTapped">Home</paper-item>
+                    <paper-item page="char" on-tap="_onMenuTapped">My Characters</paper-item>
+                    <!--<paper-item page="forums" on-tap="_onMenuTapped">Forums</paper-item>-->
+                    <!--<paper-submenu>-->
+                        <!--<paper-item class="menu-trigger">Characters</paper-item>-->
+                        <!--<paper-menu class="menu-content" attr-for-selected="page" selected="{{selectedPage}}">-->
+                            <!--<paper-item page="browse">Browse Characters</paper-item>-->
+                            <!--<paper-item page="char" on-tap="_onMenuTapped">My Characters</paper-item>-->
+                        <!--</paper-menu>-->
+                    <!--</paper-submenu>-->
+                </paper-menu>
             </app-drawer>
 
-            <!-- Main content -->
             <app-header-layout has-scrolling-region>
 
                 <app-header condenses reveals effects="waterfall">
                     <app-toolbar>
                         <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
-                        <div title>Uthrandir Web App</div>
                     </app-toolbar>
                 </app-header>
-
-                <iron-pages role="main" selected="[[page]]" attr-for-selected="name">
-                    <ut-char-page name="characters" route="{{subroute}}"></ut-char-page>
-                    <my-view1 name="view1"></my-view1>
-                    <my-view2 name="view2"></my-view2>
-                    <my-view3 name="view3"></my-view3>
-                </iron-pages>
-
+                <neon-animated-pages role="main"
+                                     fallback-selection="home"
+                                     selected="{{routeData.page}}"
+                                     attr-for-selected="name"
+                                     entry-animation="fade-in-animation"
+                                     exit-animation="fade-out-animation">
+                    <ut-home-page name="home" route="{{subroute}}"></ut-home-page>
+                    <!--<ut-forums-page name="forums" route="{{subroute}}"></ut-forums-page>-->
+                    <ut-char-page name="char" route="{{subroute}}"></ut-char-page>
+                </neon-animated-pages>
             </app-header-layout>
 
         </app-drawer-layout>
-
     </template>
 
     <script>
@@ -127,28 +139,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             properties: {
 
-//        page: {
-//          type: String,
-//          reflectToAttribute: true,
-//          observer: '_pageChanged'
-//        },
+                selectedPage: {
+                    type: String,
+                    observer: '_selectedPageChanged'
+                },
+
+                routeData: {
+                    type: Object
+                }
 
             },
 
-            observers: [
-                '_routePageChanged(routeData.page)'
-            ],
-
-            _routePageChanged: function (page) {
-                this.page = page || 'view1';
+            _onMenuTapped: function () {
+                console.log('tapped', this.$.drawerLayout.narrow);
+                if (this.$.drawerLayout.narrow) {
+                    this.$.drawerLayout.drawer.close();
+                }
             },
 
-//      _pageChanged: function(page) {
-//        // load page import on demand.
-//        this.importHref(
-//          this.resolveUrl('my-' + page + '.html'), null, null, true);
-//      }
-
+            _selectedPageChanged: function (page) {
+                if (page) {
+                    this.set('routeData.page', page);
+                }
+            },
         });
 
     </script>

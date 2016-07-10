@@ -7,62 +7,89 @@
 
 <dom-module id="ut-char-card">
     <style is="custom-style" include="iron-flex iron-flex-alignment">
+        paper-card paper-icon-button {
+            z-index: 3;
+            right: 5px;
+            top: -55px;
+            position: absolute;
+        }
+
         paper-card {
-            max-width: 600px;
-            padding: 5px;
+            width: 600px;
             box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
         }
 
-        #content {
-            padding: 10px;
+        #pageContent {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            margin-right: 40px;
         }
 
-        #charBio {
-            padding: 10px;
+        #char-img {
+            margin-bottom: 10px;
+            margin-right: 20px;
+            width: 250px;
+            height: 300px;
         }
 
-        #charProfile {
-            padding: 15px;
+        #charProfile div {
+            min-width: 50%;
         }
+
+        a {
+            color: black;
+            text-decoration: none;
+        }
+
     </style>
     <template>
 
-
         <ut-char-data id="charData" char-data="{{charData}}"></ut-char-data>
 
-        <div id="content" class="horizontal layout center-justified" hidden$="{{!_validCharSelected}}">
-            <a href="/characters">
+        <div id="pageContent" class="horizontal layout center-justified" hidden$="{{!_validCharSelected}}">
+
+            <a href="/char">
                 <paper-icon-button icon="arrow-back"></paper-icon-button>
             </a>
+
             <paper-card heading="{{char.nickname}}">
 
                 <div class="card-content horizontal layout wrap">
-
-                    <div id="charImage">
-                        <iron-image src="{{char.image}}" fade="true"></iron-image>
-                    </div>
-
-                    <div id="charBio">
-                        <div hidden$="{{!char.firstName}}">First name: {{char.firstName}}</div>
-                        <div hidden$="{{!char.lastName}}">Last name: {{char.lastName}}</div>
-                        <div hidden$="{{!char.gender}}">Gender: {{char.gender}}</div>
-                        <div hidden$="{{!char.race}}">Race: {{char.race}}</div>
-                        <div hidden$="{{!char.faith}}">Faith: {{char.faith}}</div>
-                        <div hidden$="{{!char.age}}">Age: {{char.age}}</div>
-                        <div hidden$="{{!char.residence}}">Residence: {{char.residence}}</div>
-                    </div>
-
-                </div>
-
-                <div id="charProfile" hidden$="{{!char.profile}}">
-                    <div>Profile: {{char.profile}}</div>
-                </div>
-
-                <div class="card-actions">
-                    <a href="/characters/edit/{{char.index}}" tabindex="-1">
-                        <paper-icon-button icon="editor:mode-edit" hidden$="{{allowEdit}}">
-                        </paper-icon-button>
+                    <a href="/char/edit/{{char.index}}" tabindex="-1">
+                        <paper-icon-button icon="editor:mode-edit" hidden$="{{allowEdit}}"></paper-icon-button>
                     </a>
+
+                    <iron-image id="char-img"
+                                fade
+                                sizing="cover"
+                                src="{{char.image}}"
+                                preload
+                                placeholder="/img/default_profile_picture.png">
+                    </iron-image>
+
+                    <div id="charInfo">
+                        <div><strong>User:</strong> {{char.username}}</div>
+                        <div><strong>Character:</strong> {{char.index}}</div>
+                    </div>
+
+                </div>
+
+                <div id="charProfile" class="card-actions">
+                    <h2>Profile</h2>
+                    <div class="horizontal layout wrap">
+                        <div hidden$="{{!char.firstName}}"><strong>First name:</strong> {{char.firstName}}</div>
+                        <div hidden$="{{!char.lastName}}"><strong>Last name:</strong> {{char.lastName}}</div>
+                        <div hidden$="{{!char.gender}}"><strong>Gender:</strong> {{char.gender}}</div>
+                        <div hidden$="{{!char.race}}"><strong>Race:</strong> {{char.race}}</div>
+                        <div hidden$="{{!char.faith}}"><strong>Faith:</strong> {{char.faith}}</div>
+                        <div hidden$="{{!char.age}}"><strong>Age:</strong> {{char.age}}</div>
+                        <div hidden$="{{!char.residence}}"><strong>Residence:</strong> {{char.residence}}</div>
+                    </div>
+                </div>
+
+                <div class="card-actions" hidden$="{{!char.profile}}">
+                    <div><h2>Biography:</h2></div>
+                    <div>{{char.profile}}</div>
                 </div>
 
             </paper-card>
