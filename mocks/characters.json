@@ -4,42 +4,42 @@
     "1": {
       "index": "1",
       "username": "demo",
-      "nickname": "Steve",
-      "firstName": "Steve",
-      "lastName": "Steveson",
-      "age": 20,
-      "residence": "Stevetown",
-      "gender": "male",
-      "race": "Dwarf",
-      "faith": "Earth",
-      "profile": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-      "image": "http://img15.deviantart.net/0de2/i/2014/072/2/d/dwarf_lord___algadon_by_seraph777-d63xqiy.jpg"
+      "nickname": "Purethistle Elderbark",
+      "firstName": "Purethistle",
+      "lastName": "Elderbark",
+      "age": 2732,
+      "residence": "Elen’dor",
+      "gender": "Male",
+      "race": "Ancient Elf",
+      "faith": "Life",
+      "profile": "Wise, patient and apt to focus on the big picture. He takes his time with decision yet is very defensive about the workings of the forests. He sees the younger races as dispensable and a small part of a big picture and thus respects them but can be condescending at times. He tends to talk in riddles choosing words and phrases that are spun like puzzles for the listener to piece together.\n\nElderbark can be very slow to act and confusing to talk to. He also can be over sensitive concerning trees. His longevity and connection to Life can make him care little about the woes of others as he knows all things are bound to change sooner or later.",
+      "image": "https://i.gyazo.com/7a1f7b10550c5689c4ba11999ada2bd4.png"
     },
     "2": {
       "index": "2",
       "username": "demo",
-      "nickname": "Bob",
-      "firstName": "Sdfgdfme",
-      "lastName": "Soggggme",
-      "profile": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
-      "image": "http://all4desktop.com/data_images/original/4247706-elf.jpg"
+      "nickname": "Ganorga The Ghastly",
+      "firstName": "Ganorga",
+      "lastName": "The Ghastly",
+      "age": 232,
+      "gender": "Female",
+      "race": "Troll",
+      "faith": "Earth",
+      "profile": "Ganorga can appear a fair maiden. Very comely and enticing to the eye however, in her true form she is a short gruesome looking creature. She is very fat and waddles about like a duck.\n\nGanorga is a spiteful and mean individual known for her cruelty and malice against the Skriniar. She despises mortals and looks to constantly harm them. Ganorga is very intelligent for a troll and specializes in the most gruesome Earth Magics. She carries around and obsidian amulet which she uses to amplify her spiteful magic. It is said that she is one of the few Cobalt Wizards that has mastered the \"Petrify\". A spells that can turn enemies into solid stone for more than 2 days! ",
+      "image": "https://s-media-cache-ak0.pinimg.com/736x/c9/07/9e/c9079e7603bfad205a5770278ca39d89.jpg"
     },
     "3": {
       "index": "3",
       "username": "demo",
-      "nickname": "James",
-      "firstName": "Sdfgdfme",
-      "lastName": "Soggggme",
-      "profile": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-      "image": "http://vignette2.wikia.nocookie.net/amsnorth/images/f/fe/Wizard.jpg"
-    },
-    "4": {
-      "index": "4",
-      "username": "demo",
-      "nickname": "Dude",
-      "firstName": "Sdfgdfme",
-      "lastName": "Soggggme",
-      "profile": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+      "nickname": "Hyacinth HoneyPot",
+      "firstName": "Hyacinth HoneyPot",
+      "lastName": "HoneyPot",
+      "age": 72,
+      "gender": "Female",
+      "race": "Human",
+      "faith": "Order",
+      "profile": "Perfectly put together from her hat to her custom leather shoes. She is the acceptable weight, not too skinny… not too fat like those Hobbit women... just right! She has grey eyes and wears her hair in a very conservative fashion as befitting one of high society.\n\nVery eager in climbing the Aristocratic Scale. She has a  good heart but always trying to be more than she really is or could ever really hope to be.\n\nShe relishes the dogmatic rituals and cultural expectations. Shunning anyone else who can't be bothered to make themselves \"up to snuff.\" She is always trying and more often than not... but failing.",
+      "image": "http://orig09.deviantart.net/de74/f/2015/187/1/3/madame_ravonge___pathfinder_by_miguelregodon-d906c2r.jpg"
     }
   }
 }
