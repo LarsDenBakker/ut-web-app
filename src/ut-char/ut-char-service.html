@@ -22,7 +22,7 @@
 
             _subject: new Rx.Subject(),
 
-            _charData: undefined,
+            _charData: null,
 
             subscribe: function (callback) {
                 if (this._charData) callback(this._charData);
@@ -34,13 +34,11 @@
             },
 
             _onGetResponse: function (event) {
-//                console.log('onGetResponse, ', event.detail.response)
                 this._charData = event.detail.response;
                 this._onNext();
             },
 
-            _onNext: function() {
-//                console.log('service.onNext()', this._charData)
+            _onNext: function () {
                 this._subject.onNext(this._charData);
             },
 
@@ -65,10 +63,10 @@
                         this._charData.characters[toEdit.index] = toEdit;
                         this._onNext();
                     } else {
-                        throw `Attempting to edit a char at non-existing index: ${toEdit.index}.`
+                        throw 'Attempting to edit a char at non-existing index: ' + toEdit.index + '.'
                     }
                 } else {
-                    throw `Illegal char to edit: ${toEdit}.`
+                    throw 'Illegal char to edit: ' + toEdit + '.'
                 }
                 //TODO: Post to server
             },
@@ -80,7 +78,7 @@
                 return -1
             },
 
-            _validateLoaded: function() {
+            _validateLoaded: function () {
                 if (!this._charData) throw 'Service has not been loaded yet.';
             }
         });

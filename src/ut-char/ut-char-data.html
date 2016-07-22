@@ -20,8 +20,11 @@
                 ready: function () {
                     var _this = this;
                     charService.subscribe(function(charData) {
-//                        console.log('on next, ', JSON.stringify(charData.characters[1]))
-                        _this.set('charData', Object.assign({}, charData));
+                        var copy = {};
+                        for (var attr in charData) {
+                            if (charData.hasOwnProperty(attr)) copy[attr] = charData[attr];
+                        }
+                        _this.set('charData', copy);
                     });
                 }
             })
